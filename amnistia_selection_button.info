@@ -1,0 +1,6 @@
+; $Id: $
+name = Amnistia Selection
+description = Provides Amnistia Selection Button Mobile.
+core = 7.x
+package = Amnistia
+dependencies[] = webform

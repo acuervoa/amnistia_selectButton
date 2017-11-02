@@ -1,0 +1,106 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: andres.cuervo.adame
+ * Date: 13/09/2017
+ * Time: 13:41
+ */
+
+
+function amnistia_selection_button_init() {
+
+  drupal_add_css(drupal_get_path('module', 'amnistia_selection_button') . '/assets/amnistia_selection_button.css');
+  drupal_add_js(drupal_get_path('module', 'amnistia_selection_button') . '/assets/amnistia_selection_button.js');
+}
+
+function amnistia_selection_button_webform_component_render_alter(&$element, &$component) {
+
+  if ($component['amnistia_selection_button']) {
+    $element['#post_render'] = array('amnistia_selection_button_post_render');
+  }
+
+}
+
+function amnistia_selection_button_post_render($content, $element) {
+
+  $selectButton = '';
+  foreach($element['#options'] as $key => $value){
+    if (!empty($key)) {
+      $selectButton .= '<div class="selectButton-slide">'
+        . '<input type="button" class="selectButton-input'. (($element['#value'] == $key) ? ' selectButton-value-selected' : ''). '" '
+        . 'id="' . $key. '" '
+        . 'name="' . $key . '" '
+        . 'value="' . $value . '" '
+        . 'autocomplete="off" '
+        . 'readonly>'
+        . '</div>';
+    }
+  }
+
+  return '<div id="selectButton-'.$element['#id'].'" class="selectButton-container">
+            <div class="selectButton-wrapper">'
+            . $selectButton
+          . '</div>'
+        . '</div>'
+    . $content;
+}
+
+
+function amnistia_selection_button_form_webform_component_edit_form_alter(&$form, $component) {
+
+  $nid = $form['nid']['#value'];
+  $cid = $form['cid']['#value'];
+  if (NULL == $cid) {
+    $cid = 0;
+  }
+
+  if ($component['build_info']['args'][1]['type'] == 'select') {
+
+    $webform_selection_buttons = db_query('SELECT amnistia_selection_button FROM {webform_component} WHERE nid = :nid AND cid = :cid', array(':nid' => (int) $nid, ':cid' => $cid))->fetchField();
+
+    $form['display']['amnistia_selection_button'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Select buttons'),
+      '#default_value' => $webform_selection_buttons,
+      '#description' => t('Check this option if should be show as a select buttons module).'),
+      '#weight' => 1,
+    );
+  }
+
+}
+
+function amnistia_selection_button_webform_component_update($component) {
+
+  $style = array();
+  $selectionButtons = 0;
+  if (isset($component['display']['amnistia_selection_button'])) {
+    $selectionButtons = $component['display']['amnistia_selection_button'];
+  }
+
+  $result = db_update('webform_component')
+    ->fields(array(
+      'amnistia_selection_button' => $selectionButtons,
+    ))
+    ->condition('nid', (int) $component['nid'], '=')
+    ->condition('cid', (int) $component['cid'], '=')
+    ->execute();
+
+}
+
+/**
+ * Implements webform_component_insert().
+ *
+ * @param $component
+ */
+function amnistia_selection_button_webform_component_insert($component) {
+  webform_styles_webform_component_update($component);
+}
+
+function amnistia_selection_button_form_element($variables) {
+  $element = $variables['element'];
+  // Disable radio button N/A
+  if ($element['#type'] == 'radio' && $element['#return_value'] == '_none') {
+    $variables['element']['#attributes']['disabled'] = TRUE;
+  }
+  return theme_form_element($variables);
+}

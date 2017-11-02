@@ -1,0 +1,28 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: andres.cuervo.adame
+ * Date: 13/09/2017
+ * Time: 13:52
+ */
+
+function amnistia_selection_button_install() {
+  $result = db_query("ALTER TABLE {webform_component} ADD amnistia_selection_button TINYINT COMMENT 'Option button for webform component'");
+
+
+  if ($result === false) {
+    drupal_set_message(t('Failed to add a column into the webform component table'), 'error');
+  }
+}
+
+/**
+ * This function uninstalls the module.
+ */
+function amnistia_selection_button_uninstall() {
+  $result = db_query("ALTER TABLE {webform_component} DROP amnistia_selection_button");
+  if ($result === false) {
+    drupal_set_message(t('Failed to remove a column from the webform component table'), 'error');
+  }
+}
+
+

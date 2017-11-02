@@ -1,0 +1,48 @@
+/* Pay Amount */
+.selectButton-container + .webform-component-select{
+  display: none !important;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-container{
+  width: 100%;
+  height: 100px;
+  overflow: visible;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper{
+  cursor: pointer;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper .selectButton-input{
+  display: inline-block;
+  height: 80px;
+  width: 100%;
+  margin-bottom: 10px;
+
+  border: 2px solid #CCCCCC;
+  border-radius: 1px;
+  background-color: #eeeeee;
+
+  text-align: center;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper > .selectButton-slide{
+  float:left;
+  height: 60px;
+  width: 30%;
+  margin:5px;
+  font-size: 20px;
+  font-weight:lighter;
+  color: #aaaaaa;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper .value-selected{
+  background-color: #f1e60d;
+  border:2px solid #000000;
+  font-weight: bold;
+  color: #000000;
+}
+
+.node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper + label{
+  width:99%;
+}
