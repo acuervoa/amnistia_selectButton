@@ -10,6 +10,7 @@
 }
 
 .node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper{
+  width:100%;
   cursor: pointer;
 }
 
@@ -29,8 +30,7 @@
 .node-type-webform .content-form .amnistia_form_mobile .selectButton-wrapper > .selectButton-slide{
   float:left;
   height: 60px;
-  width: 22%;
-  margin:5px;
+  padding:1px;
   font-size: 20px;
   font-weight:lighter;
   color: #aaaaaa;

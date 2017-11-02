@@ -18,7 +18,9 @@
 
 
     function sync_selectButton_and_select(selectButton_id) {
+      console.log(selectButton_id);
       var selectButton_value_selected = jQuery('#'+selectButton_id+' .selectButton-wrapper .selectButton-slide .value-selected').attr('id');
+      console.log(selectButton_value_selected);
       var select_id = selectButton_id.replace('selectButton-', '');
       var $select = jQuery('#'+select_id);
       $select.val(selectButton_value_selected).change();

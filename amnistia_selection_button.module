@@ -24,10 +24,11 @@ function amnistia_selection_button_webform_component_render_alter(&$element, &$c
 function amnistia_selection_button_post_render($content, $element) {
 
   $selectButton = '';
+  $widthPercentage = 100 / (count($element['#options']) == 0 ? 1 : count($element['#options']));
   foreach($element['#options'] as $key => $value){
     if (!empty($key)) {
-      $selectButton .= '<div class="selectButton-slide">'
-        . '<input type="button" class="selectButton-input'. (($element['#value'] == $key) ? ' selectButton-value-selected' : ''). '" '
+      $selectButton .= '<div class="selectButton-slide" style="width:'. $widthPercentage.'%">'
+        . '<input type="button" class="selectButton-input'. (($element['#value'] == $key) ? ' value-selected' : ''). '" '
         . 'id="' . $key. '" '
         . 'name="' . $key . '" '
         . 'value="' . $value . '" '
@@ -36,6 +37,7 @@ function amnistia_selection_button_post_render($content, $element) {
         . '</div>';
     }
   }
+
 
   return '<div id="selectButton-'.$element['#id'].'" class="selectButton-container">
             <div class="selectButton-wrapper">'
