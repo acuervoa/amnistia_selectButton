@@ -7,7 +7,7 @@
  */
 
 function amnistia_selection_button_install() {
-  $result = db_query("ALTER TABLE {webform_component} ADD amnistia_selection_button TINYINT COMMENT 'Option button for webform component'");
+  $result = db_query("ALTER TABLE {webform_component} ADD amnistia_selection_button TINYINT DEFAULT 0 COMMENT 'Option button for webform component'");
 
 
   if ($result === false) {

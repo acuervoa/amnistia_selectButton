@@ -16,7 +16,7 @@ function amnistia_selection_button_init() {
 function amnistia_selection_button_webform_component_render_alter(&$element, &$component) {
 
   if ($component['amnistia_selection_button']) {
-    $element['#post_render'] = array('amnistia_selection_button_post_render');
+    $element['#post_render'] = ['amnistia_selection_button_post_render'];
   }
 
 }
@@ -25,17 +25,17 @@ function amnistia_selection_button_post_render($content, $element) {
 
   $selectButton = '';
   $countNotEmpty = 0;
-  foreach($element['#options'] as $key => $value) {
+  foreach ($element['#options'] as $key => $value) {
     if (!empty($key)) {
       $countNotEmpty++;
     }
   }
   $widthPercentage = 100 / ($countNotEmpty === 0 ? 1 : $countNotEmpty);
-  foreach($element['#options'] as $key => $value) {
+  foreach ($element['#options'] as $key => $value) {
     if (!empty($key)) {
-      $selectButton .= '<div class="selectButton-slide" style="width:'. $widthPercentage.'%">'
-        . '<input type="button" class="selectButton-input'. (($element['#value'] == $key) ? ' value-selected' : ''). '" '
-        . 'id="' . $key. '" '
+      $selectButton .= '<div class="selectButton-slide" style="width:' . $widthPercentage . '%">'
+        . '<input type="button" class="selectButton-input' . (($element['#value'] == $key) ? ' value-selected' : '') . '" '
+        . 'id="' . $key . '" '
         . 'name="' . $key . '" '
         . 'value="' . $value . '" '
         . 'autocomplete="off" '
@@ -45,11 +45,11 @@ function amnistia_selection_button_post_render($content, $element) {
   }
 
 
-  return '<div id="selectButton-'.$element['#id'].'" class="selectButton-container">
+  return '<div id="selectButton-' . $element['#id'] . '" class="selectButton-container">
             <div class="selectButton-wrapper">'
-            . $selectButton
-          . '</div>'
-        . '</div>'
+    . $selectButton
+    . '</div>'
+    . '</div>'
     . $content;
 }
 
@@ -58,37 +58,40 @@ function amnistia_selection_button_form_webform_component_edit_form_alter(&$form
 
   $nid = $form['nid']['#value'];
   $cid = $form['cid']['#value'];
-  if (NULL == $cid) {
+  if (NULL === $cid) {
     $cid = 0;
   }
 
   if ($component['build_info']['args'][1]['type'] == 'select') {
 
-    $webform_selection_buttons = db_query('SELECT amnistia_selection_button FROM {webform_component} WHERE nid = :nid AND cid = :cid', array(':nid' => (int) $nid, ':cid' => $cid))->fetchField();
+    $webform_selection_buttons = db_query('SELECT amnistia_selection_button FROM {webform_component} WHERE nid = :nid AND cid = :cid', [
+      ':nid' => (int) $nid,
+      ':cid' => $cid,
+    ])->fetchField();
 
-    $form['display']['amnistia_selection_button'] = array(
+    $form['display']['amnistia_selection_button'] = [
       '#type' => 'checkbox',
       '#title' => t('Select buttons'),
       '#default_value' => $webform_selection_buttons,
       '#description' => t('Check this option if should be show as a select buttons module).'),
       '#weight' => 1,
-    );
+    ];
   }
 
 }
 
 function amnistia_selection_button_webform_component_update($component) {
 
-  $style = array();
+  $style = [];
   $selectionButtons = 0;
   if (isset($component['display']['amnistia_selection_button'])) {
     $selectionButtons = $component['display']['amnistia_selection_button'];
   }
 
   $result = db_update('webform_component')
-    ->fields(array(
+    ->fields([
       'amnistia_selection_button' => $selectionButtons,
-    ))
+    ])
     ->condition('nid', (int) $component['nid'], '=')
     ->condition('cid', (int) $component['cid'], '=')
     ->execute();
